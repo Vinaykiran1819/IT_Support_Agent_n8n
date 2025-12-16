@@ -1,0 +1,273 @@
+{
+  "name": "Support_Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "01aadd80-fe97-4d07-9b83-8060bc3ffe88",
+      "name": "When chat message received",
+      "webhookId": "cfa52014-c788-4cc1-bddd-c1bf2b193322"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "ff9c1779-4794-44a3-8d9f-e16b6e9f0883",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        96,
+        192
+      ],
+      "id": "afce96d0-774e-4fa5-af69-6fcfe36a994a",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "z34PaOstaUbi6sj5",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to answer questions about the Mississippi State Employee Handbook, leave policies, and code of conduct.",
+        "topK": 1
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1.1,
+      "position": [
+        608,
+        112
+      ],
+      "id": "91f19cb0-4172-4cee-acca-578c3550bc52",
+      "name": "Answer questions with a vector store"
+    },
+    {
+      "parameters": {
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "support-agent",
+          "mode": "list",
+          "cachedResultName": "support-agent"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        496,
+        304
+      ],
+      "id": "03a46e59-42e6-45e9-9f73-c7dd12f17f64",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "kPSLQrNYoNf4LpdC",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "sentence-transformers/all-MiniLM-L6-v2",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsHuggingFaceInference",
+      "typeVersion": 1,
+      "position": [
+        640,
+        448
+      ],
+      "id": "247ef205-81e2-4db3-982e-8fb8ec80add2",
+      "name": "Embeddings HuggingFace Inference",
+      "credentials": {
+        "huggingFaceApi": {
+          "id": "r8JYEmX48SpXTPJb",
+          "name": "HuggingFaceApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        912,
+        272
+      ],
+      "id": "af62291b-3884-458a-a998-3648d21c26af",
+      "name": "Groq Chat Model1",
+      "credentials": {
+        "groqApi": {
+          "id": "z34PaOstaUbi6sj5",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "=Call this tool to create a support ticket when the user has a technical issue that cannot be solved by reading the policy documents.",
+        "workflowId": {
+          "__rl": true,
+          "value": "PfCjUZoFD3CLWNcB",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/PfCjUZoFD3CLWNcB",
+          "cachedResultName": "Tool_Create_Ticket"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        368,
+        208
+      ],
+      "id": "ad1a93ac-c71f-4c02-808f-b883cacffd93",
+      "name": "create_ticket"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        208
+      ],
+      "id": "00323024-9a94-49e7-a0fa-3e11ffeec169",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer questions with a vector store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings HuggingFace Inference": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create_ticket": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f6b1554d-fbad-4dc8-8017-682f9fec7a65",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9146c8937fed7fea1528210dcaefb7e0098d97467de48895fee523f24ce3e383"
+  },
+  "id": "oRNw0m8z0esAzWTH",
+  "tags": []
+}

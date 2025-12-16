@@ -1,0 +1,169 @@
+{
+  "name": "Ticket_Approver",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "5101551e-c4c7-4519-a425-42113435a93f",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7c0de303-dfe6-4b17-8b81-d449a3fb4605",
+      "name": "Webhook",
+      "webhookId": "5101551e-c4c7-4519-a425-42113435a93f"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "125vusYs_vb5ul71L3JbX96DfKDHeyaw8ieaVsc_8Lc8",
+          "mode": "list",
+          "cachedResultName": "IT_Support_Tickets_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/125vusYs_vb5ul71L3JbX96DfKDHeyaw8ieaVsc_8Lc8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/125vusYs_vb5ul71L3JbX96DfKDHeyaw8ieaVsc_8Lc8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ticket_ID": "={{ $now.toMillis() }}",
+            "User_Issue": "={{ $json.query.issue }}",
+            "Timestamp": "={{ $now }}",
+            "Status": "=New"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Ticket_ID",
+              "displayName": "Ticket_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "User_Issue",
+              "displayName": "User_Issue",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "9a4e759c-a2d7-4d5d-98fc-403dbd3cfdd7",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Yw0VrCWtCtRIzAl1",
+          "name": "Google Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<div style=\"text-align:center; margin-top:50px; font-family:sans-serif;\">\n  <h1 style=\"color:green;\">✅ Ticket Approved!</h1>\n  <p>The ticket has been successfully created in the system.</p>\n  <p>You can close this tab now.</p>\n</div>",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "311fe8c1-7bcb-4f41-b48b-fdd1602972a9",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "58ebb87c-ae44-4f02-adca-0e0f0d2f5cc6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9146c8937fed7fea1528210dcaefb7e0098d97467de48895fee523f24ce3e383"
+  },
+  "id": "IcteAhHNBhq6VZvz",
+  "tags": []
+}

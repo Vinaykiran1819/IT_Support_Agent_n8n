@@ -1,0 +1,99 @@
+{
+  "name": "Tool_Create_Ticket",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "66a0e393-8232-443f-b9ec-203ebb3b3169",
+      "name": "When executed by another workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "65387de6-b4b6-406d-b971-acb187e072e3",
+              "name": "result",
+              "value": "=I have sent an approval email to your inbox. Please click the link inside to officially create the ticket.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        64,
+        144
+      ],
+      "id": "b2ce44e9-6d84-433c-8143-1a814b209ae6",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "vinaykiran0404@gmail.com",
+        "subject": "Approval Needed: User Ticket Request",
+        "emailType": "text",
+        "message": "=The AI wants to create a ticket.\n\nUser Issue: {{ $json.query }}\n\nClick this link to APPROVE:\nhttp://localhost:5678/webhook/5101551e-c4c7-4519-a425-42113435a93f?issue={{ $json.query.replace(/ /g, \"%20\") }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -208,
+        144
+      ],
+      "id": "8e7db685-785a-459c-878b-8a10ae58c47c",
+      "name": "Send a message",
+      "webhookId": "2d011596-dba4-47f6-befb-2e109a127c0b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "0deNfvH4KH8iBb7f",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When executed by another workflow": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "13f10aa3-3895-433f-b1ca-3a93abe90b35",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9146c8937fed7fea1528210dcaefb7e0098d97467de48895fee523f24ce3e383"
+  },
+  "id": "PfCjUZoFD3CLWNcB",
+  "tags": []
+}
